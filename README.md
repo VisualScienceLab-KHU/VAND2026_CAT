@@ -40,23 +40,19 @@ tifffile==2023.7.10
 ADEval==1.1.0
 ```
 
-## Pretrained Backbone
+## DINOv3 Pretrained Backbone
 
-The default backbone is DINOv3 ViT-L/16.
+The default backbone is DINOv3 ViT-L/16. This is the public pretrained backbone
+weight, not the final anomaly detection checkpoint trained for this challenge.
 
-Download the pretrained weight and place it at:
+Download the DINOv3 pretrained weight and place it at:
 
 ```text
 ./pre_weights/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth
 ```
 
-Pretrained Weight URL:
 
-```text
-https://drive.google.com/file/d/1mBYLvNc4sktJodrzwkjx7kUjOr9zH8jF/view?usp=drive_link
-```
-
-DINOv3 repository URL:
+DINOv3 repository & pretrained weight URL:
 
 ```text
 https://github.com/facebookresearch/dinov3
@@ -70,6 +66,32 @@ The run script sets:
 ```bash
 export DINOV3_REPO="${DINOV3_REPO:-./dinov3}"
 export DINOV3_WEIGHTS="./pre_weights/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"
+```
+
+## Trained Challenge Checkpoints
+
+The trained INP-Former challenge checkpoints are separate from the DINOv3
+pretrained backbone weight. They are produced by running the training stage in
+`run_vand.sh`.
+
+Place or generate the trained checkpoints under:
+
+```text
+./saved_results
+```
+
+The checkpoint naming pattern is:
+
+```text
+./saved_results/
+  INP-Former-Multi-Class_dataset=./mvtec_ad_2_Encoder=dinov3_vitl16_Resize=448_Crop=392_INP_num=6_CLASS={category}/
+    model.pth
+```
+
+Trained checkpoint URL:
+
+```text
+https://drive.google.com/file/d/1mBYLvNc4sktJodrzwkjx7kUjOr9zH8jF/view?usp=drive_link
 ```
 
 ## Dataset Preparation
@@ -127,7 +149,8 @@ RESULTS_DIR="./results"
 Each category is trained with the same architecture and hyperparameters. The
 category name only selects the corresponding normal training data directory.
 
-Checkpoints are saved under `--save_dir`. The current default in `isvl.py` is:
+Trained challenge checkpoints are saved under `--save_dir`. The current default
+in `isvl.py` is:
 
 ```text
 ./saved_results
@@ -135,14 +158,6 @@ Checkpoints are saved under `--save_dir`. The current default in `isvl.py` is:
 
 Make sure `--save_dir` and `TOTAL_EPOCHS` are consistent with the checkpoint
 directory used for inference.
-
-The checkpoint naming pattern is:
-
-```text
-{save_dir}/
-  INP-Former-Multi-Class_dataset=./mvtec_ad_2_Encoder=dinov3_vitl16_Resize=448_Crop=392_INP_num=6_CLASS={category}/
-    model.pth
-```
 
 ## Inference
 
