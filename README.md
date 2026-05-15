@@ -189,28 +189,16 @@ Current threshold configuration is stored in `4_threshold_mapv2.py`.
 
 Threshold source/configuration:
 
-Thresholds are computed with `compute_validation_thresholds.py` from anomaly
-scores on the `validation/good` split. The script loads the trained checkpoints,
-runs inference on normal validation images, and applies a fixed rule:
+Thresholds are computed from anomaly scores on the `validation/good` split. The
+trained checkpoints are used to run inference on normal validation images, and a
+fixed rule is applied:
 
 ```text
 threshold = mean(validation_good_scores) + k * std(validation_good_scores)
 ```
 
-Example command:
-
-```bash
-python compute_validation_thresholds.py \
-  --data_path "./mvtec_ad_2_aug" \
-  --save_dir "./saved_results" \
-  --k 3.0 \
-  --threshold_scope global \
-  --output "./validation_thresholds.json"
-```
-
-The resulting thresholds are written to `validation_thresholds.json`. The final
-threshold values used for submission were then entered into `4_threshold_mapv2.py`
-before running the final postprocessing step.
+The final threshold values used for submission are included in
+`4_threshold_mapv2.py` before running the final postprocessing step.
 
 This threshold procedure does not use `test_public`, `test_private`, or
 `test_private_mixed` data for threshold optimization.
