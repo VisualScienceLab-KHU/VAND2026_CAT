@@ -210,6 +210,7 @@ fixed rule is applied:
 
 ```text
 threshold = mean(validation_good_scores) + k * std(validation_good_scores)
+here, k = 3
 ```
 
 The final threshold values used for submission are included in
