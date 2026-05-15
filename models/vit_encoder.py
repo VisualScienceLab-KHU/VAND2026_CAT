@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import importlib
 
 import torch
 from packaging import version
@@ -44,7 +45,7 @@ def load_dinov3(name):
 
     try:
         try:
-            import torch._dynamo  # noqa: F401
+            importlib.import_module("torch._dynamo")
         except ImportError as dynamo_exc:
             raise RuntimeError(
                 "DINOv3 requires a PyTorch build with torch._dynamo support. "
